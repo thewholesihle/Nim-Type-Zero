@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nil Type Zero</title>
+
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="log"></div>
+    <div class="alert">
+        <h1 class="alert-title">Device Screen Not Supported</h1>
+        <p class="alert-paragraph">NT0 requires devices with larger screens/display.</p>
+    </div>
+    <div class="reset" onclick="giveRandomCards();">Reset</div>
+    <div class="container">
+        <div class="counter">0</div>
+        <div class="player">You</div>
+        <div class="bot one">
+            bot1
+            <div class="bot-status"></div>
+        </div>
+        <div class="bot two">
+            bot2
+            <div class="bot-status"></div>
+        </div>
+        <div class="bot three">
+            bot3
+            <div class="bot-status"></div>
+        </div>
+    </div>
+ 
+    <div class="cards">
+        <div class="card card-one"></div>
+        <div class="card card-two"></div>
+        <div class="card card-three"></div>
+        <div class="card card-four"></div>
+    </div>
+
+    <script src="scripts/game.js"></script>
+</body>
+</html>

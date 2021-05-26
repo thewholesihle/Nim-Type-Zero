@@ -1,0 +1,19 @@
+{
+  "name": "nin-type-zero",
+  "version": "1.0.0",
+  "description": "A web game based on Episode 3('The Untouchable Girl') of the anime series \"Kakegurui XX\".",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kakegurui",
+    "anime",
+    "web",
+    "game",
+    "javascript",
+    "game"
+  ],
+  "author": "Siphesihle Bomela",
+  "license": "MIT"
+}
