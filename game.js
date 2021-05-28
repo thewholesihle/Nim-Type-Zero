@@ -46,13 +46,22 @@ class Bot {
 	throwCard() {
 		if (!(parseInt(total.innerHTML) > 9)) {
 			// if total is not greater
-			if (!(this.cards.length === 0 || this.cards == [])) {
-				/*if bot is not out of cards*/
+			if (!(this.cards.length === 0 || this.cards == [])) { /*if bot is not out of cards*/
 				this.cardsLeft = this.cardsLeft - 1; // decrement cardsLeft
 				//send to turn to log
 				updateBotStats();
 				sendLog(`${this.elem.innerHTML}'s turn`);
 
+				if(parseInt(total.innerHTML) <= 6){
+					if(this.cards.find(3) != undefined){
+						console.log('bot has 3')
+						//throw the three
+					} else {
+						//throw max card
+					}
+				} else if(parseInt(total.innerHTML) > 6){
+					//throw minimum card
+				}
 				//? throwing the card
 				let thrownCard = this.cards.sort().shift(); // the card thrown by the bot
 				this.cardsThrown.push(thrownCard); //add the cards thrown
