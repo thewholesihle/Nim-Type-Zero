@@ -44,6 +44,9 @@ class Bot {
 
 	// this class method will throw the least greater card
 	throwCard() {
+		let thrownCard;
+
+		console.log(this.cards)
 		if (!(parseInt(total.innerHTML) > 9)) {
 			// if total is not greater
 			if (!(this.cards.length === 0 || this.cards == [])) { /*if bot is not out of cards*/
@@ -52,21 +55,28 @@ class Bot {
 				updateBotStats();
 				sendLog(`${this.elem.innerHTML}'s turn`);
 
+				//? throwing the card
 				if(parseInt(total.innerHTML) <= 6){
-					if(this.cards.find(3) != undefined){
+					if(this.cards.includes(3)){ // check for a 3
 						console.log('bot has 3')
 						//throw the three
+						thrownCard = this.cards.sort().pop(); // sort, then get the last one which should be 3						
+						this.cardsThrown.push(thrownCard); //add the cards thrown	
+						total.innerHTML = parseInt(total.innerHTML) + parseInt(thrownCard); // adding the thrown car to the total
 					} else {
 						//throw max card
+						console.log('bot does not have 3')
+						thrownCard = this.cards.sort().pop(); // sort, and get the max card						
+						this.cardsThrown.push(thrownCard); //add the cards thrown	
+						total.innerHTML = parseInt(total.innerHTML) + parseInt(thrownCard); // adding the thrown car to the total
 					}
 				} else if(parseInt(total.innerHTML) > 6){
 					//throw minimum card
+					thrownCard = this.cards.sort().shift(); // sort and get the min card
+					this.cardsThrown.push(thrownCard); //add the cards thrown	
+					total.innerHTML = parseInt(total.innerHTML) + parseInt(thrownCard); // adding the thrown card to the total
 				}
-				//? throwing the card
-				let thrownCard = this.cards.sort().shift(); // the card thrown by the bot
-				this.cardsThrown.push(thrownCard); //add the cards thrown
 				console.log(`${this.elem.innerHTML} played a ${thrownCard}!`);
-				total.innerHTML = parseInt(total.innerHTML) + parseInt(thrownCard); // adding the thrown car to the total
 
 				//send action to log
 				sendLog(
