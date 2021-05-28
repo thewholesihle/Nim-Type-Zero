@@ -215,7 +215,7 @@ cardsElem.forEach((card) => {
 			playSound('../sound/player-lost.wav')
 
 			overlay.classList.toggle("show");
-			alert("You Won");
+			alert("You Lost");
 			location.reload(); // reload the page
 		} else { //means it is not greater so continue
 			// continue the game
