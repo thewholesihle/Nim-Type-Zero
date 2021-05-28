@@ -9,8 +9,19 @@ console.log(" --- * --- --- --- ---");
 console.log(
 	`Cheat :\niDontLikeThree(); - to change cards to any number less than three `
 );
+
 let overlay = document.querySelector(".overlay");
-overlay.classList.toggle('show');// toggled for the username
+let usernameModal = document.querySelector('.username-modal');
+let player = document.querySelector(".player");
+
+// check username in cookie
+if(document.cookie){ // if we have cookies
+	usernameModal.classList.toggle('active'); //hide the modal
+	player.innerHTML = document.cookie.replace('username=', '');
+} else {
+	overlay.classList.toggle('show');// toggled for the username
+    console.log('we dont have cookies');
+}
 
 window.onload = ()=> {
 
@@ -151,7 +162,6 @@ function updateBotStats() {
 //! THE PLAYER
 //first goes the player
 let cardsElem = document.querySelectorAll(".card"); //? the player's cards in array
-let player = document.querySelector(".player");
 let playerCardsLeft = 4;
 let playerWaitTime = 6500; // how long the player waits after taking a turn
 //? this function gives gives the player random cards (from one to 3)
@@ -402,7 +412,6 @@ nevermindBug.addEventListener("click", () => {
 	}
 });
 
-let usernameModal = document.querySelector('.username-modal')
 let pickUsername = document.querySelector('.username-btn');
 let usernameInput = document.querySelector('.username-field');
 pickUsername.addEventListener('click', () => {
@@ -415,6 +424,7 @@ pickUsername.addEventListener('click', () => {
 		usernameInput.style.border = "solid 2px red"
 	}
 })
+
 // shuffle 
 let shuffleButton = document.querySelector('.reshuffle');
 let shuffleCount = 1;
