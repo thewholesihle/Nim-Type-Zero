@@ -244,6 +244,13 @@ function displayEveryCard(){
 		card.style.display = "flex";
 	});
 }
+//? function store username in cookie
+let d = new Date();
+let dow =['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+function createCookie(cname, value){
+	document.cookie = `${cname} = ${value}; expires=${dow[d.getUTCDay()]}, ${d.getUTCDate()} ${d.getUTCFullYear()} 12:00:00 UTC;` //? COOKIE EXPIRES THE NEXT DAY
+}
+
 
 //? after player takes its turn
 function botsTurn() {
@@ -401,6 +408,7 @@ let usernameInput = document.querySelector('.username-field');
 pickUsername.addEventListener('click', () => {
 	if(usernameInput.value && !(usernameInput.value).match(' ')){ // if user entered something
 		player.innerHTML = usernameInput.value;
+		createCookie("username", usernameInput.value);
 		usernameModal.classList.toggle('active'); //hide the modal
 		overlay.classList.toggle('show');
 	} else {
