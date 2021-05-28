@@ -205,6 +205,8 @@ cardsElem.forEach((card) => {
 			playSound('../sound/player-lost.wav')
 
 			overlay.classList.toggle("show");
+			alert("You Won");
+			location.reload(); // reload the page
 		} else { //means it is not greater so continue
 			// continue the game
 			botsTurn(); // the bot's turn
@@ -317,6 +319,7 @@ function botsTurn() {
 			if (bots.length === 0 || bots === []) {
 				sendLog("You Won The Game !");
 				alert("You Won");
+				location.reload(); // reload the page
 			}
 
 			if (!(parseInt(total.innerHTML) > 9) && !(bots === [])) {
