@@ -1,8 +1,12 @@
 :root {
+	--background: #101013;
+	--card-bg: #0F0D0D;
+	--card-color: #dcdcdc54;
 	--bot-color: #f13232;
 	--player-color: #32f14b;
-	--table-color: #3b3b34;
+	--table-color: #EEEEEE;
 	--counter-color: #367436;
+	--modal-bg: white;
 }
 
 @media (max-width: 770px){
@@ -18,12 +22,13 @@
 
 body,
 html {
+	background: var(--background);
 	padding: 0;
 	margin: 0;
 	width: 100%;
 	height: 100%;
 	user-select: none;
-	font-family: "Accidental Presidency";
+	font-family: "Harmonia Sans Pro Cyr";
 	overflow-y: hidden;
 	display: flex;
 	flex-direction: column;
@@ -34,7 +39,7 @@ html {
 .overlay {
 	display: none;
 	position: fixed;
-	background: #00000041;
+	background: #000000c9;
 	width: 100%;
 	height: 100%;
 	z-index: 999;
@@ -58,19 +63,63 @@ html {
 	text-align: center;
 }
 
-.reset {
-	background: orangered;
+.reshuffle {
+	transition: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	background: #1a1a18;
 	padding: 1rem;
 	position: absolute;
-	top: 0;
-	left: 0;
+	bottom: 2rem;
+	left: 2rem;
 	cursor: pointer;
+	font-weight: 700;
+	text-transform: uppercase;
+	border-radius: 1rem;
+}
+
+.reshuffle::after {
+	transition: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	content: 'reshuffle your cards';
+	position: absolute;
+	top: -5rem;
+	background: #1b191991;
+	color: #32f14b;
+	opacity: 0;
+	padding: 1rem;
+	border-radius: 5px;
+	width: 100px;
+}
+
+.reshuffle:hover.reshuffle::after {
+	opacity: 1;
+}
+
+.reshuffle:hover .reshuffle-icon path{
+	stroke: #32f14b !important;
+}
+
+
+
+.reshuffle.used {
+	transition: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	transform: scale(0);
+	opacity: 0;
+}
+
+/* log scrollbar */
+.log::-webkit-scrollbar {
+	background: #141212;
+}
+
+.log::-webkit-scrollbar-thumb {
+	background: #292926;
+	border-radius: 4px;
 }
 
 .log {
+	opacity: 0.8;
     width: 300px;
     height: 100px;
-    background-color: gray;
+    background-color: #0F0D0D;
     color: white;
     padding: 1rem 0 1rem 2rem;
     position: absolute;
@@ -78,19 +127,245 @@ html {
     right: 0;
     overflow-y: scroll;
     overflow-x: hidden;
-    scroll-behavior: smooth;
     line-height: 15px;
-    scrollbar-width: 0;
+	font-weight: bold;
 }
 
 .log::after{
-    content: '';
+	content: '';
     position: fixed;
     top: 0; 
-    right: 19px;
-    width: 313px;
-    height: 15px;
-    background: linear-gradient(to bottom, #3b3b34, transparent) ;
+	right: 0;
+    width: 332px;
+    height: 20px;
+    background: linear-gradient(to bottom, #0000009d, transparent) ;
+}
+
+.about {
+	transition: 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	background: #1a1a18;
+	position: absolute;
+	z-index: 20;
+	bottom: 2rem;
+	right: 2rem;
+	width: 50px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+	border-radius: 50%;
+	color: white;
+	box-shadow: 0 0 20px #00000073;
+	cursor: pointer;
+}
+
+.about:hover {
+	color: #2137ff;
+}
+
+.about-buttons {
+	transition: 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	position: absolute;
+	font-size: 1rem;
+	top: -10rem;
+	right: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	text-align: center;
+	transform-origin: bottom right;
+	transform: scale(0);
+	color: white;
+	opacity: 0;
+}
+
+.about-buttons > div {
+	transition: 100ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	background: #161615;
+	padding: 10px 20px;
+	margin: 1rem 0;
+	width: 60px;
+	border-radius: 4px;
+	font-weight: 600;
+}
+
+.about-buttons > div:hover {
+	background: #1a1a18;
+	color: #2137ff;
+}
+
+.about.active.about{
+	color: #2137ff;
+}
+
+.about.active > .about-buttons{
+	opacity: 1;
+	transform: scale(1);
+	top: -10rem;
+	right: 3rem;
+	color: white;
+}
+
+ /* Modals */
+ .modal {
+	user-select: text;
+	display: none;
+	position: absolute;
+	z-index: 1001;
+	background: var(--modal-bg);
+	padding: 3rem;
+	border-radius: 1rem;
+	max-height: 500px;
+	overflow-y: scroll;
+ }
+ 
+/* modal scrollbar */
+.modal::-webkit-scrollbar {
+	display: none;
+}
+
+.about-modal::-webkit-scrollbar-thumb {
+	background: #5a5a5a;
+	border-radius: 2rem;
+}
+
+.about-modal.active, .report-bug-modal.active {
+	display: block;
+}
+
+.modal img {
+	max-width: 350px;
+}
+
+.modal a {
+	color: #6335cf;
+	font-weight: 600;
+}
+
+
+textarea {
+	font-family: 'Harmonia Sans Pro Cyr';
+	font-weight: 600;
+	letter-spacing: 1px;
+	outline: none;
+	resize: none;
+	width: 90%;
+	background: #ebebeb;
+	border: none;
+	padding: 1rem;
+	margin-top: 1rem;
+	border-radius: 8px;
+}
+
+
+.log-checkbox {
+	cursor: pointer;
+	appearance: none;
+	background: #ffff;
+	margin: auto 0;
+	margin-top: 2rem;
+	margin-right: 8px;
+	padding: 6px;
+	border-radius: 50%;
+	box-shadow: 
+		0 0 0 2px rgb(255, 255, 255),
+		0 0 0 4px rgb(64, 74, 204);
+	;
+}
+
+.log-checkbox:checked {
+	background: #2427cc;
+	padding: 6px;
+	box-shadow: 
+		0 0 0 2px rgb(255, 255, 255),
+		0 0 0 4px rgb(64, 74, 204);
+	;
+}
+
+.btn {
+	cursor: pointer;
+	padding: 1rem 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 600;
+	border-radius: 8px;
+}
+
+
+.btns {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+		margin-top: 2rem;
+}
+
+.report-bug-btn {
+	color: white;
+	width: 80px;
+	background: #2137ffda;
+}
+.report-bug-btn:hover {
+	background: #2137ff;
+}
+
+.nevermind-bug-btn {
+	margin-right: 1rem;
+	color: white;
+	width: 80px;
+	background: #8d97f8;
+}
+
+.nevermind-bug-btn:hover {
+	background: #6a74cc;
+}
+
+.username-modal {
+	position: absolute;
+	background: var(--modal-bg);
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	z-index: 1000;
+}
+
+.username-modal.active {
+	display: none;
+}
+
+.username-field {
+	background: rgba(114, 114, 114, 0.301);
+	outline: none ;
+	width: 250px;
+	height: 50px;
+	padding: 5px 20px;
+	border: none;
+	font-family: 'Harmonia Sans Pro Cyr';
+	font-weight: 600;
+	font-size: 1rem;
+	border-radius: 7px;
+}
+
+.max-chars {
+	color: #10101380;
+	font-weight: 500;
+}
+
+.username-btn {
+	cursor: pointer;
+	background-color: #f13232;
+	padding: 15px 1rem;
+	width: 120px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 500;
+	color: white;
+	border-radius: 7px;
+	margin-top: 3rem;
 }
 .container {
 	background-color: var(--table-color);
@@ -98,16 +373,22 @@ html {
 	height: 300px;
 	max-width: 600px;
 	position: relative;
+	position: absolute;
+	top: 12rem;
 	display: flex;
 	justify-content: center;
 	border-radius: 1rem;
 }
 
-.counter {
+.total {
+	font-family: Impact;
 	align-self: center;
-	font-size: 3rem;
-	color: gainsboro;
+	color: #b4b4b4;
+	font-size: 4rem;
+	font-weight: 800;
+	margin-bottom: -3rem;
 }
+
 .bot,
 .player {
 	position: absolute;
@@ -115,10 +396,10 @@ html {
 	align-items: center;
 	justify-content: center;
 	padding: 1rem;
+	border-radius: 50%;
 	color: white;
 	width: 20px;
 	height: 20px;
-	border-radius: 50%;
 }
 
 .player {
@@ -126,10 +407,15 @@ html {
 	bottom: -5rem;
 	background: var(--player-color);
     transform: rotate(180deg);
+	width: 40px;
+	height: 40px;
+	padding: 10px;
 }
 
 .player.is-turn, .player.is-turn {
-	transform: scale(1.5) rotate(0deg);
+	transform: scale(1.3) rotate(0deg);
+	font-weight: 500;
+
 }
 .bot {
 	transition: 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -150,55 +436,47 @@ html {
 	border-radius: 50%;
 }
 
+
 /* if its the bot's turn */
 .bot.is-turn.bot::after {
 	display: block;
 	opacity: 1;
 }
 
-.bot-status {
+.bot-stats {
 	transition: 400ms cubic-bezier(0.215, 0.610, 0.355, 1);
-	opacity: 0;
-	transform: scale(0.3);
-	background: gray;
-	width: 100px;
+	width: 150px;
 	height: 70px;
+	background: white;
+	color: #0F0D0D;
 	position: absolute;
-	top: -5rem;
-	left: 4rem;
-	display: flex;
+	z-index: 20;
+	display: none;
 	align-items: center;
 	justify-content: center;
+	padding: 2rem;
+	border-radius: 2rem;
+	box-shadow: 0 0 20px #10101371;
+	user-select: text;
+	font-weight: 500;
 }
 
-.one .bot-status {
-	transform: scale(0.3) rotate(90deg);
-	border-radius: 2rem 2rem 0;
+.bot:hover .bot-stats {
+	display: flex;
+	cursor: text;
 }
 
-.two .bot-status {
-	border-radius: 2rem 2rem 2rem 0;
+.one:hover .bot-stats {
+	transform: rotate(90deg);
+	bottom: 1.5rem;
 }
 
-.three .bot-status {
-	left: -6rem;
-	transform: scale(0.3) rotate(-90deg);
-	border-radius:  2rem 2rem 2rem 0;
+.three:hover .bot-stats{
+	transform: rotate(-90deg);
+	bottom: 1.5rem;
 }
 
-.one:hover .bot-status {
-	opacity: 1;
-	transform: scale(1.2) rotate(90deg);
-}
-.two:hover .bot-status {
-	opacity: 1;
-	transform: scale(1.2) rotate(0deg);
-}
 
-.three:hover .bot-status {
-	opacity: 1;
-	transform: scale(1.2) rotate(-90deg);
-}
 /* positioning the bots */
 .one,
 .three {
@@ -208,7 +486,6 @@ html {
 .one {
 	left: -4rem;
     transform: rotate(-90deg);
-
 }
 
 .two {
@@ -220,20 +497,73 @@ html {
     transform: rotate(90deg);
 }
 
+.cards-thrown {
+	transition: 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.bot-one-thrown {
+	left: 0;
+	align-self: center;
+	transform: rotate(90deg);
+}
+
+.bot-two-thrown {
+	position: absolute;
+	transform: rotate(180deg);
+	top: 2rem;
+}
+
+.bot-three-thrown {
+	right: 0;
+	align-self: center;
+	transform: rotate(-90deg);
+}
+
+.bot-one-thrown span, .bot-two-thrown span, .bot-three-thrown span {
+	width: 30px;
+	height: 50px;
+	border: solid 3px var(--bot-color);
+	background: var(--background);
+	color: white;
+	box-shadow: inset 0 0 20px #0000004d;
+	margin: 0 5px;
+	display: flex;
+	align-items:center;
+	justify-content: center;
+	font-size: 1.5rem;
+	font-weight: 900;
+	box-sizing: border-box;
+	border-radius: 5px;
+}
+
 /* The cards */
 .cards {
 	transition: 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	display: flex;
+	align-items: center;
+	justify-content: center;
 	position: absolute;
-	bottom: 0;
+	bottom: -4rem;
+	border: solid 4px var(--table-color);
+	border-radius: 1rem;
+	padding-top: 1rem;
+	width: 800px;
+	height: 200px;
 }
 
 .card {
-	transition: 200ms ease-in-out;
-	border: darkslategray;
-	background-color: gray;
-	width: 90px;
-	height: 120px;
+	font-family: Impact;
+	transition: 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	border: solid 2px transparent;
+	box-sizing: border-box;
+	background-color: var(--card-bg);
+	color: var(--card-color);
+	width: 130px;
+	height: 180px;
 	margin: 0 2rem;
 	display: flex;
 	justify-content: center;
@@ -242,34 +572,44 @@ html {
 	font-weight: 800;
 	font-size: 4rem;
 	border-radius: 4px;
+
 }
 
 .card::after {
+	font-family: 'Harmonia Sans Pro Cyr';
 	transition: 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	content: "pull";
+	content: "Throw";
+	border: solid 4px transparent;
 	position: absolute;
-	top: -2rem;
+	top: -5rem;
 	padding: 5px 10px;
 	border-radius: 2rem;
-	font-size: 1.2rem;
+	font-size: 1rem;
+	text-transform: uppercase;
 	background: transparent;
 	color: transparent;
 }
 
 .cards > .card:hover {
-	background: rgb(43, 43, 43);
-	color: gainsboro;
-	margin-top: -30px;
+	color:  #DCDCDC;
+	border: solid 3px #DCDCDC;
+	margin-top: -100px;
 }
 
 .cards > .card:hover.card::after {
 	color: black;
 	background: #dfd21c;
 	top: -3rem;
+	border: solid 4px #DCDCDC;
 }
 
 .cards.hideCards {
-	bottom: -10rem;
+	bottom: -15rem;
+	padding-top: 5rem;
 	opacity: 0.3;
 	cursor: not-allowed;
+}
+
+.cards.hideCards > .card::after {
+	margin-top: 10rem;
 }

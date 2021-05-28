@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Anime, Game, Web Game, HTML, Javascript, Kakegurui">
+    <meta name="description" content="A web game based on the anime series 'Kakegurui XX' by Siphesihle Bomela ">
+    
     <title>Nil Type Zero</title>
 
     <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
@@ -16,21 +20,55 @@
         <h1 class="alert-title">Device Screen Not Supported</h1>
         <p class="alert-paragraph">NT0 requires devices with larger screens/display.</p>
     </div>
-    <div class="reset" onclick="giveRandomCards();">Reset</div>
+    <div class="reshuffle" onclick="giveRandomCards();">
+    <svg width="24" height="24" class="reshuffle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7514 2.96659L15.1904 7.88059C15.3114 8.12859 15.5464 8.30059 15.8194 8.34159L21.2774 9.13259C21.4984 9.16159 21.6984 9.27859 21.8334 9.45659C22.0874 9.78759 22.0494 10.2596 21.7444 10.5456L17.7904 14.3856C17.5904 14.5726 17.5004 14.8506 17.5524 15.1186L18.5054 20.5316C18.5714 20.9816 18.2664 21.3996 17.8194 21.4736C17.6334 21.5026 17.4434 21.4726 17.2764 21.3886L12.4084 18.8376C12.1644 18.7046 11.8704 18.7046 11.6274 18.8376L6.72738 21.4066C6.31838 21.6126 5.82238 21.4576 5.60038 21.0596C5.51538 20.8986 5.48438 20.7126 5.51438 20.5316L6.46738 15.1186C6.51338 14.8506 6.42438 14.5756 6.22938 14.3856L2.24438 10.5446C1.91938 10.2206 1.91838 9.69459 2.24238 9.36859C2.24338 9.36859 2.24338 9.36759 2.24438 9.36659C2.37738 9.24559 2.54238 9.16359 2.72038 9.13259L8.17838 8.34159C8.44938 8.29759 8.68438 8.12559 8.80738 7.88059L11.2464 2.96659C11.3434 2.76659 11.5174 2.61359 11.7284 2.54359C11.9394 2.47259 12.1704 2.48859 12.3704 2.58959C12.5344 2.67159 12.6674 2.80359 12.7514 2.96659Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+        
+    </div>
+    
+    <div class="about">&quest;
+        <div class="about-buttons">
+            <div class="about-game">About Game</div>
+            <div class="bug-report">Report Bug</div>
+        </div>
+    </div>
+  
+
     <div class="container">
-        <div class="counter">0</div>
+        <div class="total">0</div>
         <div class="player">You</div>
+        <div class="bot-one-thrown cards-thrown">
+            <span class="thrown-one"></span>
+            <span class="thrown-two"></span>
+            <span class="thrown-three"></span>
+            <span class="thrown-four"></span>
+        </div>
         <div class="bot one">
             bot1
-            <div class="bot-status"></div>
+            <div class="bot-stats"></div>
+        </div>
+
+        <div class="bot-two-thrown cards-thrown">
+            <span class="thrown-one"></span>
+            <span class="thrown-two">2</span>
+            <span class="thrown-three"></span>
+            <span class="thrown-four"></span>
         </div>
         <div class="bot two">
             bot2
-            <div class="bot-status"></div>
+            <div class="bot-stats"></div>
+        </div>
+
+        <div class="bot-three-thrown cards-thrown">
+            <span class="thrown-one"></span>
+            <span class="thrown-two">3</span>
+            <span class="thrown-three"></span>
+            <span class="thrown-four"></span>
         </div>
         <div class="bot three">
             bot3
-            <div class="bot-status"></div>
+            <div class="bot-stats"></div>
         </div>
     </div>
  
@@ -41,6 +79,65 @@
         <div class="card card-four"></div>
     </div>
 
-    <script src="scripts/game.js"></script>
+
+  <!-- Modals -->
+
+<!-- Username -->
+<div class="username-modal">
+    <h2>Enter Username</h2>
+    <input type="text" name="username" class="username-field" placeholder="Username" maxlength="6">
+    <span class="max-chars">6 characters max | No whitespaces</span>
+    <div class="username-btn">Play</div>
+</div>
+  <!-- About Modal -->
+  <div class="about-modal modal">
+    <span class="hollow"></span>
+    <h1>About</h1>
+    <p>
+        This is a web game(duh) based on the anime series 'Kakegurui', from episode 3
+        <i>"The Untouchable Girl"</i>.
+    </p>
+
+    <h2>How the game works</h2>
+    
+    <img src="./img/types-of-cards.png" alt="">
+    <p>There are 4 types cards <b>0</b>, <b>1</b>, <b>2</b> and <b>3</b></p>
+    <br><br>
+    <img src="./img/cards-at-hand.png" alt="">
+    <p>Each player gets 4 cards at hand.</p>
+    <br><br>
+    <img src="./img/each-turn.png" alt="each-turn-image">
+    <p>In each turn, each player will play a single card from their hand. </p>
+    <br><br>
+    <img src="./img/total.png" alt="total_turn_kakegurui">
+    <p>Each turn adds the number of the played card to the total.<br>If the card played by the player brings the total to more than 9, the player loses. </p>
+    <br>
+    <i>Enjoy</i>
+    <br><br>
+    <hr>
+    <h2>About Creator</h2>
+    <p>
+        Created By Siphesihle(<a href="https://twitter.com/trinitysenpai">@trinitysenpai</a>)
+        <br>
+         
+    </p>
+    <p>Took about 10 days to complete.</p>
+    <p><i>Made with &#x1F49A; and struggle</i></p>
+</div>
+
+<!-- Bug Report Modal -->
+<div class="report-bug-modal modal">
+    <h1>Report A Bug</h1>
+    <p>Dang... well then, fill out some paperwork below and I'll exterminate the bug.</p>
+    <input type="checkbox" name="send_log" class="log-checkbox" checked> <label for="send_log">Send log(text at the top-right corner)</label>
+    <textarea name="report" id="about-bug-field" rows="7" maxlength="300" placeholder="more on what happened (Optional)"></textarea>
+  <div class="btns">
+    <div class="nevermind-bug-btn btn">Nevermind</div>
+    <div class="report-bug-btn btn">Report Bug</div>
+  </div>
+    
+
+</div>
+    <script src="game.js"></script>
 </body>
 </html>
