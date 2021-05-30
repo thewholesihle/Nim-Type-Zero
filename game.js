@@ -412,12 +412,14 @@ nevermindBug.addEventListener("click", () => {
 	}
 });
 
+// Username Modal & Cookie Feature
 let pickUsername = document.querySelector('.username-btn');
 let usernameInput = document.querySelector('.username-field');
+
 pickUsername.addEventListener('click', () => {
-	if(usernameInput.value && !(usernameInput.value).match(' ')){ // if user entered something
+	if(usernameInput.value && !(usernameInput.value).match(' ')){ // if user entered something, check for whitespaces
 		player.innerHTML = usernameInput.value;
-		createCookie("username", usernameInput.value);
+		createCookie("username", usernameInput.value); // create a cookie and store the username 
 		usernameModal.classList.toggle('active'); //hide the modal
 		overlay.classList.toggle('show');
 	} else {
