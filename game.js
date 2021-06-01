@@ -195,7 +195,7 @@ cardsElem.forEach((card) => {
 		} 
 		// add to total
 		total.innerHTML = parseInt(total.innerHTML) + parseInt(e.target.innerHTML);
-		playSound('../sound/throw.wav');
+		playSound('./sound/throw.wav');
 
 		console.log(`You played a ${e.target.innerHTML}`);
 		console.log(`total : ${total.innerHTML}`); //keeping track
@@ -308,8 +308,7 @@ function botsTurn() {
 						}
 						
 						bot.cardsPlayedElem.style.opacity = 0.3;
-						playSound('../sound/bot-lost.wav');
-
+						playSound('./sound/bot-lost.wav');
 						bots = removeElem(bots, bots.indexOf(bot)); //? the bot is out of the game
 
 						//? starting all over without the bot that lost
@@ -439,17 +438,26 @@ shuffleButton.addEventListener('click', () => {
 })
 // ! GAME SOUND
 
-let playSound = sound => new Audio(sound).play(); // just to minimize the typing
+let playSound = (file) => {
+	let sound = new Howl({
+		src : [file],
+		rate : 1.3,
+		volume : 0.2,
+		preload : true
+	  });
+	  
+	sound.play();
+}
 
-/*
+//add event listener for hover each card
 cardsElem.forEach(card => {
-	card.addEventListener("mouseover", (e)=>{
-		if(!(cardContainer.classList.contains('hideCards'))) {
-			playSound('../sound/card-hover.wav')
+	card.addEventListener("mouseover", ()=>{
+		if(!(cardContainer.classList.contains('hideCards'))) { //if cards are not hidden
+			playSound('../sound/card-hover.wav');  // play card-hover sound
 		}
 	})
 })
-*/
+
 
 // Functions END
 

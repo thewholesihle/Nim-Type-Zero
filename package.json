@@ -15,5 +15,6 @@
     "game"
   ],
   "author": "Siphesihle Bomela",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {}
 }
