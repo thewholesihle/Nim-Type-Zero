@@ -139,10 +139,7 @@ function updateBotStats() {
 	let botCardsLeft = [bot1, bot2, bot3];
 
 	for (let i = 0; i < botCardsLeft.length; i++) {
-		botStats[i].innerHTML = 
-		`Cards Left : ${botCardsLeft[i].cardsLeft} <br>
-		Advantage : ${Math.floor(Math.random() * 100)}%
-		`; // set every stat to the bot's cards left
+		botStats[i].innerHTML = `Cards Left : ${botCardsLeft[i].cardsLeft}`; // set every stat to the bot's cards left
 	}
 
 	for (let i = 0; i < bots.length; i++) {
@@ -211,8 +208,7 @@ cardsElem.forEach((card) => {
 			sendLog(
 				`<span style="color: var(--player-color); text-transform: uppercase;">You bought the total to more than 9</span>`
 			);
-			// playSound('../sound/9.wav')
-			playSound('../sound/player-lost.wav')
+			playSound('./sound/player-lost.wav')
 
 			overlay.classList.toggle("show");
 			alert("You Lost");
