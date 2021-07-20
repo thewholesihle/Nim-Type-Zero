@@ -375,10 +375,11 @@ textarea {
 	max-width: 600px;
 	position: relative;
 	position: absolute;
-	top: 12rem;
+	top: 15%;
 	display: flex;
 	justify-content: center;
 	border-radius: 1rem;
+	scale: 0.85;
 }
 
 .total {
