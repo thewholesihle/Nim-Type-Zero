@@ -479,3 +479,23 @@ function iDontLikeThree() {
 		card.innerHTML = Math.floor(Math.random() * 3);
 	});
 }
+
+// ! BUG REPORT FORM
+
+let form = document.querySelector('form');
+
+
+form.addEventListener('submit', (ev) => {
+	ev.preventDefault(); // prevent redirect
+	let log = document.querySelector(".log");
+	document.querySelector('.logs').value = log.innerText.replace(/\n/g, ''); // remove line breaks
+	const data = new URLSearchParams(new FormData(form));
+	// send post 
+	fetch('/report', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		body: data
+	});
+})

@@ -260,6 +260,9 @@ textarea {
 	border-radius: 8px;
 }
 
+textarea[name="logs"] {
+	display: n;
+}
 
 .log-checkbox {
 	cursor: pointer;
