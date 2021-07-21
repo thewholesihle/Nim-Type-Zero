@@ -261,7 +261,7 @@ textarea {
 }
 
 textarea[name="logs"] {
-	display: n;
+	display: none;
 }
 
 .log-checkbox {

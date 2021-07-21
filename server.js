@@ -49,9 +49,9 @@ app.post('/report', (req, res) => {
             to: myEmail,
             subject: 'Bug Report From Nim Type Zero',
             text: 
-            `<h2> You got a Bug Report <h2>
+            `<h2>You got a Bug Report<h2>
 
-           <b> Report : <b> <br> <p>${req.body.report}</p>
+           <b>Report :<b> <br> <p>${req.body.report}</p>
             
            <h3>Logs</h3>
            <code>${req.body.logs}</code>
@@ -71,3 +71,5 @@ app.post('/report', (req, res) => {
         }
     });
 })
+
+console.log(myEmail, process.env.PASS);
