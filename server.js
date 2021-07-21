@@ -10,7 +10,7 @@ const myEmail = process.env.EMAIL;
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: myEmail,
+        user: process.env.EMAIL,
         pass: process.env.PASS
     }
 })
@@ -48,14 +48,7 @@ app.post('/report', (req, res) => {
             from: 'sihletrinity70@gmail.com',
             to: myEmail,
             subject: 'Bug Report From Nim Type Zero',
-            text: 
-            `<h2>You got a Bug Report<h2>
-
-           <b>Report :<b> <br> <p>${req.body.report}</p>
-            
-           <h3>Logs</h3>
-           <code>${req.body.logs}</code>
-            `,
+            text: `<h2>You got a Bug Report<h2><b>Report :<b> <br> <p>${req.body.report}</p><h3>Logs</h3><code>${req.body.logs}</code>`,
         };
     }
 
