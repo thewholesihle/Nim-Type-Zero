@@ -1,4 +1,8 @@
 const nodemailer = require('nodemailer');
+const {
+    google
+} = require('googleapis');
+const oauth2 = google.auth.OAuth2;
 const express = require('express');
 const app = express();
 
@@ -6,13 +10,31 @@ const port = process.env.PORT || 3000;
 
 const myEmail = process.env.EMAIL;
 
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
+const oauth2Client = new oauth2(
+    process.env.CLIENT_ID, // ClientID
+    process.env.CLIENT_SECRET, // Client Secret
+    "https://developers.google.com/oauthplayground" // Redirect URL
+);
+
+oauth2Client.setCredentials({
+    refresh_token: "Your Refresh Token Here"
+});
+
+const accessToken = oauth2Client.getAccessToken().catch(err => {})
+const smtpTransport = nodemailer.createTransport({
+    service: "gmail",
     auth: {
+        type: "OAuth2",
         user: process.env.EMAIL,
-        pass: process.env.PASS
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN,
+        accessToken: accessToken
+    },
+    tls: {
+        rejectUnauthorized: false
     }
-})
+});
 
 
 app.set('view engine', 'ejs');
@@ -34,34 +56,35 @@ app.get('/', (req, res) => {
 
 app.post('/report', (req, res) => {
     let mailOptions = {
-        from: 'sihle',
-        to: myEmail,
+        from: myEmail,
+        to: 'sihletrinity70@gmail.com',
         subject: 'Bug Report',
-        text: "<h2>You got a Bug Report<h2> <b>Report :<b> <br> <p>${req.body.report}</p>"
+        generateTextFromHTML: true,
+        html: "<h2>You got a Bug Report<h2> <b>Report :<b> <br>  <p>${req.body.report}</p>"
     }
 
     // if user wants to send log data as well
     if (req.body.send_log === 'on') {
         console.log('report includes logs');
         mailOptions = {
-            from: 'sihletrinity70@gmail.com',
-            to: myEmail,
+            from: myEmail,
+            to: 'sihletrinity70@gmail.com',
             subject: 'Bug Report From Nim Type Zero',
-            text: `<h2>You got a Bug Report<h2><b>Report :<b> <br> <p>${req.body.report}</p><h3>Logs</h3><code>${req.body.logs}</code>`,
+            generateTextFromHTML: true,
+            html: `<h2>You got a Bug Report<h2><b>Report :<b> <br> <p>${req.body.report}</p><h3>Logs</h3><code>${req.body.logs}</code>`,
         };
     }
 
 
     //send email
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
+    smtpTransport.sendMail(mailOptions, (error, response) => {
+        if(error ) {
+            res.json('email_not_sent'); 
             console.log(error);
-            res.json('could_not_send');
         } else {
-            console.log('Email sent: ' + info.response);
-            res.json('email_sent');
+            res.json('email_sent')
+            console.log(response);
         }
-    });
+        smtpTransport.close();
+   });
 })
-
-console.log(myEmail, process.env.PASS);
