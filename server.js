@@ -86,13 +86,13 @@ app.post('/report', (req, res) => {
 
     //send email
     smtpTransport.sendMail(mailOptions, (error, response) => {
-        if(error ) {
-            res.json('email_not_sent'); 
+        if (error) {
+            res.json('email_not_sent');
             console.log(error);
         } else {
             res.json('email_sent')
             console.log(response);
         }
         smtpTransport.close();
-   });
+    });
 })
