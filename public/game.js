@@ -488,7 +488,7 @@ let form = document.querySelector('form');
 form.addEventListener('submit', (ev) => {
 	ev.preventDefault(); // prevent redirect
 	let log = document.querySelector(".log");
-	document.querySelector('.logs').value = log.innerText.replace(/\n/g, ''); // remove line breaks
+	document.querySelector('.logs').value = log.innerText.replace(/\n/g, '<br>'); // remove line breaks
 	const data = new URLSearchParams(new FormData(form));
 	// send post 
 	fetch('/report', {
