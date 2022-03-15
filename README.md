@@ -15,6 +15,9 @@ git clone https://github.com/trinitysenpai/Nim-Type-Zero
 # go to the project folder
 cd Nim-Type-Zero
 
+# install dependencies
+npm install
+
 # start server
 npm run start
 ```
