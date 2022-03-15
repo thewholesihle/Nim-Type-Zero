@@ -59,7 +59,7 @@ app.post('/report', (req, res) => {
         to: 'sihletrinity70@gmail.com',
         subject: 'Bug Report',
         generateTextFromHTML: true,
-        html: "<h2>You got a Bug Report<h2> <b>Report :<b> <br> <p>${req.body.report}</p>"
+        html: "<h2>You got a Bug Report</h2> <b>Report :</b> <br> <p>${req.body.report}</p>"
     }
 
     // if user wants to send log data as well
@@ -70,7 +70,7 @@ app.post('/report', (req, res) => {
             to: 'sihletrinity70@gmail.com',
             subject: 'Bug Report: Nim Type Zero',
             generateTextFromHTML: true,
-            html: `<h2>You got a Bug Report<h2>
+            html: `<h2>You got a Bug Report</h2>
             <p>Hey! someone reported a bug, let's smash it good.</p>
             <b><u>Report</u><b>
             <p>${req.body.report}</p>
