@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0A0A0F">
     <meta name="keywords" content="Anime, Game, Web Game, HTML, Javascript, Kakegurui">
@@ -19,7 +18,7 @@
 </head>
 <body>
 
-    <!-- Overlay (for modals / small screen) -->
+    <!-- Overlay (modals / small screen) -->
     <div class="overlay" id="overlay"></div>
 
     <!-- Small screen warning -->
@@ -47,11 +46,22 @@
         </div>
     </div>
 
-    <!-- Flying card (used for throw animation) -->
+    <!-- Flying card (throw animation clone) -->
     <div class="flying-card" id="flyingCard"></div>
 
     <!-- Event Log -->
     <div class="log" id="gameLog"></div>
+
+    <!-- Gamepad badge -->
+    <div class="gamepad-badge" id="gamepadBadge">⎮ Controller</div>
+
+    <!-- Keyboard hint bar -->
+    <div class="keyboard-hint" id="keyboardHint">
+        <span><kbd>1</kbd>–<kbd>4</kbd> play</span>
+        <span><kbd>←</kbd><kbd>→</kbd> navigate</span>
+        <span><kbd>Enter</kbd> throw</span>
+        <span><kbd>R</kbd> reshuffle</span>
+    </div>
 
     <!-- Reshuffle Button -->
     <div class="reshuffle" id="reshuffleBtn" title="Reshuffle your cards (one use)">
@@ -80,7 +90,7 @@
                 <span class="total-limit">/ 9</span>
             </div>
 
-            <!-- Player indicator (bottom of table) -->
+            <!-- Player indicator -->
             <div class="player" id="playerIndicator">You</div>
 
             <!-- Bot 1 — Left -->
@@ -91,9 +101,7 @@
                 <span class="thrown-card"></span>
             </div>
             <div class="bot one" id="bot1Elem">
-                <div class="bot-avatar">
-                    <span class="bot-avatar__icon">♠</span>
-                </div>
+                <div class="bot-avatar"><span class="bot-avatar__icon">♠</span></div>
                 <span class="bot-name">Kirari</span>
                 <div class="bot-stats"></div>
             </div>
@@ -106,9 +114,7 @@
                 <span class="thrown-card"></span>
             </div>
             <div class="bot two" id="bot2Elem">
-                <div class="bot-avatar">
-                    <span class="bot-avatar__icon">♣</span>
-                </div>
+                <div class="bot-avatar"><span class="bot-avatar__icon">♣</span></div>
                 <span class="bot-name">Yumemi</span>
                 <div class="bot-stats"></div>
             </div>
@@ -121,19 +127,17 @@
                 <span class="thrown-card"></span>
             </div>
             <div class="bot three" id="bot3Elem">
-                <div class="bot-avatar">
-                    <span class="bot-avatar__icon">♥</span>
-                </div>
+                <div class="bot-avatar"><span class="bot-avatar__icon">♥</span></div>
                 <span class="bot-name">Yumeko</span>
                 <div class="bot-stats"></div>
             </div>
 
-        </div><!-- /.table-felt -->
-    </div><!-- /.container -->
+        </div>
+    </div>
 
     <!-- Player Cards -->
     <div class="cards" id="playerCards">
-        <div class="card card-one">
+        <div class="card card-one" tabindex="0">
             <div class="card-inner">
                 <span class="card-corner card-corner--tl"></span>
                 <span class="card-value"></span>
@@ -141,7 +145,7 @@
                 <span class="card-corner card-corner--br"></span>
             </div>
         </div>
-        <div class="card card-two">
+        <div class="card card-two" tabindex="0">
             <div class="card-inner">
                 <span class="card-corner card-corner--tl"></span>
                 <span class="card-value"></span>
@@ -149,7 +153,7 @@
                 <span class="card-corner card-corner--br"></span>
             </div>
         </div>
-        <div class="card card-three">
+        <div class="card card-three" tabindex="0">
             <div class="card-inner">
                 <span class="card-corner card-corner--tl"></span>
                 <span class="card-value"></span>
@@ -157,7 +161,7 @@
                 <span class="card-corner card-corner--br"></span>
             </div>
         </div>
-        <div class="card card-four">
+        <div class="card card-four" tabindex="0">
             <div class="card-inner">
                 <span class="card-corner card-corner--tl"></span>
                 <span class="card-value"></span>
@@ -167,14 +171,14 @@
         </div>
     </div>
 
-    <!-- ── Modals ─────────────────────────────────────────── -->
+    <!-- ── Modals ─────────────────────────────────── -->
 
     <!-- Username Modal -->
     <div class="username-modal" id="usernameModal">
         <div class="username-modal__suit">♦</div>
         <h2 class="username-modal__title">Enter Your Name</h2>
         <p class="username-modal__sub">to begin the game</p>
-        <input type="text" name="username" class="username-field" id="usernameField" placeholder="Username" maxlength="6" autocomplete="off">
+        <input type="text" class="username-field" id="usernameField" placeholder="Username" maxlength="6" autocomplete="off">
         <span class="max-chars">6 characters max &nbsp;·&nbsp; No whitespaces</span>
         <div class="username-btn" id="usernameBtn">
             <span>Play</span>
@@ -190,9 +194,7 @@
             This is a web game based on the anime series <strong>Kakegurui</strong>, from episode 3
             <i>"The Untouchable Girl"</i>.
         </p>
-
         <h2>How the game works</h2>
-
         <img src="./img/types-of-cards.png" alt="Types of cards: 0, 1, 2, 3">
         <p>There are 4 types of cards: <b>0</b>, <b>1</b>, <b>2</b> and <b>3</b></p>
         <br>
@@ -205,24 +207,33 @@
         <img src="./img/total.png" alt="Total — must not exceed 9">
         <p>Each turn adds the card's value to the total.<br>If the card you play brings the total above <b>9</b>, you lose.</p>
         <br>
+        <h2>Controls</h2>
+        <p>
+            <b>Mouse:</b> hover a card and click to play.<br>
+            <b>Keyboard:</b> <kbd>1</kbd>–<kbd>4</kbd> play directly · <kbd>←</kbd><kbd>→</kbd> navigate · <kbd>Enter</kbd> throw · <kbd>R</kbd> reshuffle.<br>
+            <b>Controller:</b> D-pad / left stick to navigate · <b>A</b> to throw · <b>Y</b> to reshuffle.
+        </p>
+        <br>
         <i>Enjoy the gamble.</i>
         <hr>
         <p>Audio powered by:</p>
-        <a href="https://howlerjs.com/"><img src="./img/howler-logo.png" width="180px" alt="Howler.js — The JavaScript Audio Library"></a>
+        <a href="https://howlerjs.com/"><img src="./img/howler-logo.png" width="180px" alt="Howler.js"></a>
         <hr>
         <h2>Creator</h2>
         <p>Made by Siphesihle (<a href="https://twitter.com/trinitysenpai">@trinitysenpai</a>)</p>
         <p><i>Made with &#x1F49A; and struggle</i></p>
     </div>
 
-    <!-- Bug Report Modal -->
+    <!-- Bug Report Modal — Netlify Form -->
     <div class="report-bug-modal modal" id="bugModal">
         <span class="modal-suit">♣</span>
         <h1>Report A Bug</h1>
-        <p>Fill out the form below and I'll track it down.</p>
-        <form action="/report" method="post" id="bugForm">
+        <p>Fill out the form and it'll reach the developer.</p>
+        <form name="bug-report" id="bugForm" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="bug-report">
+            <p style="display:none"><input name="bot-field"></p>
             <input type="checkbox" name="send_log" class="log-checkbox" checked>
-            <label for="send_log">Attach game log</label>
+            <label>Attach game log</label>
             <textarea name="report" id="about-bug-field" rows="7" maxlength="300" placeholder="Describe what happened (optional)"></textarea>
             <textarea name="logs" class="logs" cols="0" rows="0"></textarea>
             <div class="btns">

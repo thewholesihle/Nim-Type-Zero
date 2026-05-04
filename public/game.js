@@ -188,7 +188,12 @@ window.onload = () => {
         state.isPlayerTurn = on;
         playerIndicator.classList.toggle('is-turn', on);
         setCardsVisible(on);
-        if (on) state.clickLocked = false;
+        if (on) {
+            state.clickLocked = false;
+            kbSelectFirst();        // auto-select first card for keyboard/controller
+        } else {
+            clearKbSelected();
+        }
     }
 
     // ── Bot stats display ────────────────────────────────────
@@ -461,6 +466,7 @@ window.onload = () => {
             if (card.style.display === 'none') return;
 
             state.clickLocked = true;
+            clearKbSelected();
 
             const value = parseInt(card.dataset.value);
 
@@ -591,18 +597,199 @@ window.onload = () => {
     // ── BUG REPORT FORM ───────────────────────────────────────
     // ────────────────────────────────────────────────────────
     const bugForm = document.getElementById('bugForm');
-    bugForm.addEventListener('submit', ev => {
+    bugForm.addEventListener('submit', async ev => {
         ev.preventDefault();
         document.querySelector('.logs').value = logElem.innerText.replace(/\n/g, '<br>');
         const data = new URLSearchParams(new FormData(bugForm));
-        fetch('/report', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: data,
-        });
+        try {
+            await fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: data.toString(),
+            });
+        } catch (_) { /* silently fail in local dev */ }
         bugModal.classList.remove('active');
         overlay.classList.remove('show');
+        sendLog('Bug report sent — thanks!');
     });
+
+    // ────────────────────────────────────────────────────────
+    // ── KEYBOARD & CONTROLLER INPUT ───────────────────────────
+    // ────────────────────────────────────────────────────────
+    const keyboardHint  = document.getElementById('keyboardHint');
+    const gamepadBadge  = document.getElementById('gamepadBadge');
+
+    // Track whether the player is actively using keyboard/controller
+    // so we know whether to show the hint bar and auto-select cards.
+    let usingKeyboard   = false;
+    let kbSelectedCard  = null;     // currently highlighted card element
+
+    function getVisibleCards() {
+        return [...cardsElem].filter(c => c.style.display !== 'none');
+    }
+
+    function clearKbSelected() {
+        cardsElem.forEach(c => c.classList.remove('kb-selected'));
+        kbSelectedCard = null;
+    }
+
+    function setKbSelected(card) {
+        clearKbSelected();
+        if (!card) return;
+        card.classList.add('kb-selected');
+        kbSelectedCard = card;
+    }
+
+    // Auto-select the first visible card (called when player turn starts)
+    function kbSelectFirst() {
+        if (!usingKeyboard) return;
+        const visible = getVisibleCards();
+        if (visible.length > 0) setKbSelected(visible[0]);
+    }
+
+    function navigateCard(dir) {
+        if (!state.isPlayerTurn || state.gameOver || state.clickLocked) return;
+        if (cardContainer.classList.contains('hideCards')) return;
+
+        const visible = getVisibleCards();
+        if (visible.length === 0) return;
+
+        usingKeyboard = true;
+        keyboardHint.classList.add('visible');
+
+        const curIdx = kbSelectedCard ? visible.indexOf(kbSelectedCard) : -1;
+        const nextIdx = curIdx === -1
+            ? (dir > 0 ? 0 : visible.length - 1)
+            : (curIdx + dir + visible.length) % visible.length;
+
+        setKbSelected(visible[nextIdx]);
+        if (!cardContainer.classList.contains('hideCards')) {
+            playSound('./sound/card-hover.wav');
+        }
+    }
+
+    function playSelectedCard() {
+        if (!state.isPlayerTurn || state.gameOver || state.clickLocked) return;
+        const card = kbSelectedCard || getVisibleCards()[0];
+        if (card) card.click();
+    }
+
+    // ── Keyboard events ──────────────────────────────────────
+    document.addEventListener('keydown', e => {
+        // Don't hijack typing in inputs/textareas
+        if (['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+        // Show hint bar on first keyboard interaction
+        if (!usingKeyboard) {
+            usingKeyboard = true;
+            keyboardHint.classList.add('visible');
+        }
+
+        switch (e.key) {
+            case 'ArrowLeft':
+            case 'a':
+            case 'A':
+                e.preventDefault();
+                navigateCard(-1);
+                break;
+            case 'ArrowRight':
+            case 'd':
+            case 'D':
+                e.preventDefault();
+                navigateCard(1);
+                break;
+            case 'Enter':
+            case ' ':
+                e.preventDefault();
+                playSelectedCard();
+                break;
+            case '1': playCardAtVisibleIndex(0); break;
+            case '2': playCardAtVisibleIndex(1); break;
+            case '3': playCardAtVisibleIndex(2); break;
+            case '4': playCardAtVisibleIndex(3); break;
+            case 'r':
+            case 'R':
+                reshuffleBtn.click();
+                break;
+            default: break;
+        }
+    });
+
+    function playCardAtVisibleIndex(i) {
+        if (!state.isPlayerTurn || state.gameOver || state.clickLocked) return;
+        const visible = getVisibleCards();
+        if (visible[i]) {
+            setKbSelected(visible[i]);
+            visible[i].click();
+        }
+    }
+
+    // ── Gamepad polling ──────────────────────────────────────
+    // Standard mapping: A=0, B=1, X=2, Y=3, D-left=14, D-right=15
+    const GP_AXIS_DEAD = 0.55;
+    let gpPrevButtons  = {};
+    let gpPrevAxisX    = 0;
+    let gpConnected    = false;
+
+    function gpPressed(current, prev, idx) {
+        return current[idx] && !prev[idx];
+    }
+
+    function pollGamepad() {
+        const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+        const gp = [...gamepads].find(g => g && g.connected);
+
+        if (gp) {
+            if (!gpConnected) {
+                gpConnected = true;
+                gamepadBadge.classList.add('visible');
+                usingKeyboard = true;   // controller counts as non-mouse input
+                keyboardHint.classList.add('visible');
+            }
+
+            const cur = {};
+            gp.buttons.forEach((btn, i) => { cur[i] = btn.pressed; });
+
+            if (state.isPlayerTurn && !state.gameOver && !state.clickLocked) {
+                // Navigate — D-pad
+                if (gpPressed(cur, gpPrevButtons, 14)) navigateCard(-1);
+                if (gpPressed(cur, gpPrevButtons, 15)) navigateCard(1);
+
+                // Navigate — left analog stick (edge detection)
+                const axisX = gp.axes[0] || 0;
+                if (axisX >  GP_AXIS_DEAD && gpPrevAxisX <=  GP_AXIS_DEAD) navigateCard(1);
+                if (axisX < -GP_AXIS_DEAD && gpPrevAxisX >= -GP_AXIS_DEAD) navigateCard(-1);
+                gpPrevAxisX = axisX;
+
+                // A button → play selected card
+                if (gpPressed(cur, gpPrevButtons, 0)) playSelectedCard();
+
+                // Y (3) or X (2) → reshuffle
+                if (gpPressed(cur, gpPrevButtons, 3) || gpPressed(cur, gpPrevButtons, 2)) {
+                    reshuffleBtn.click();
+                }
+            }
+
+            gpPrevButtons = cur;
+        } else if (gpConnected) {
+            gpConnected = false;
+            gamepadBadge.classList.remove('visible');
+        }
+
+        requestAnimationFrame(pollGamepad);
+    }
+
+    window.addEventListener('gamepadconnected', () => {
+        gamepadBadge.classList.add('visible');
+    });
+    window.addEventListener('gamepaddisconnected', () => {
+        if (![...navigator.getGamepads()].some(g => g && g.connected)) {
+            gamepadBadge.classList.remove('visible');
+        }
+    });
+
+    // Start polling (safe in browsers without Gamepad API — getGamepads returns [])
+    requestAnimationFrame(pollGamepad);
 
     // ────────────────────────────────────────────────────────
     // ── GAME START ────────────────────────────────────────────

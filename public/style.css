@@ -952,3 +952,69 @@ label { color: var(--silver); font-size: 0.85rem; }
     pointer-events: none;
 }
 .card:hover::after { opacity: 1; }
+
+/* ── Keyboard / Controller selection ────────────────────── */
+.card.kb-selected {
+    transform: translateY(-28px) scale(1.05);
+    border-color: var(--gold);
+    box-shadow:
+        0 0 0 2px var(--gold),
+        0 0 28px rgba(212,175,55,0.5),
+        0 12px 30px rgba(0,0,0,0.5);
+    outline: none;
+}
+.card.kb-selected::after { opacity: 1; }
+
+/* ── Keyboard hint bar ───────────────────────────────────── */
+.keyboard-hint {
+    position: fixed;
+    bottom: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1.2rem;
+    font-size: 0.65rem;
+    font-family: var(--font-body);
+    color: var(--text-muted);
+    pointer-events: none;
+    z-index: 10;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 400ms;
+}
+.keyboard-hint.visible { opacity: 1; }
+
+kbd {
+    display: inline-block;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 0.62rem;
+    font-family: var(--font-body);
+    color: var(--silver);
+    line-height: 1.4;
+}
+
+/* ── Gamepad badge ───────────────────────────────────────── */
+.gamepad-badge {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface);
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 0.7rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 400ms;
+}
+.gamepad-badge.visible { opacity: 1; }

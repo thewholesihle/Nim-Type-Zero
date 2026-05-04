@@ -1,0 +1,9 @@
+[build]
+  publish = "public"
+  command = ""
+
+# Serve index.html for all routes (single-page app behaviour)
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200

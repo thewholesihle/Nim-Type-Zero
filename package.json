@@ -1,8 +1,8 @@
 {
   "name": "nim-type-zero",
-  "version": "1.0.0",
-  "description": "A web game based on Episode 3('The Untouchable Girl') of the anime series \"Kakegurui XX\".",
-  "main": "game.js",
+  "version": "2.0.0",
+  "description": "A web game based on Episode 3 ('The Untouchable Girl') of the anime series \"Kakegurui XX\".",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
@@ -11,18 +11,12 @@
     "anime",
     "web",
     "game",
-    "javascript",
-    "game"
+    "javascript"
   ],
   "author": "Siphesihle Bomela",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^10.0.0",
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "googleapis": "^82.0.0",
-    "nodemailer": "^6.6.3",
-    "nodemon": "^2.0.12"
+    "express": "^4.22.1"
   },
   "devDependencies": {
     "eslint": "^7.31.0"
